@@ -15,10 +15,17 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
-    public void registerUser(User user) {
+    public void registerUser(User user) throws IllegalArgumentException {
+        if (userRepository.findByUsername(user.getUsername()) != null) {
+            throw new IllegalArgumentException("Пользователь с таким именем уже существует.");
+        }
+        if (userRepository.findByEmail(user.getEmail()) != null) {
+            throw new IllegalArgumentException("Пользователь с таким email уже существует.");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
+
     
     public User findUserById(Long id)
     {
@@ -32,4 +39,5 @@ public class UserService {
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
 }

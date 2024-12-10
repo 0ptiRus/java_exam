@@ -1,0 +1,123 @@
+/* Основные стили */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Шапка */
+.header {
+    background-color: #4682b4;
+    color: #fff;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+}
+
+.nav .nav-link {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 1em;
+}
+
+.nav .nav-link:hover {
+    text-decoration: underline;
+}
+
+/* Основной контент */
+.main {
+    margin: 20px 0;
+}
+
+.main-title {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Публикации */
+.feed {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.post {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.author-name {
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.post-date {
+    font-size: 0.9em;
+    color: #666;
+    margin-left: 10px;
+}
+
+.post-content p {
+    margin: 10px 0;
+    font-size: 1em;
+}
+
+.post-image {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+.post-footer {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn {
+    padding: 5px 10px;
+    background-color: #4682b4;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #5a9ad5;
+}
