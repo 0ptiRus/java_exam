@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная - Социальная Сеть</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    
+     <style>
+        /* Initially hide the comment form */
+        .comment-form-container {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        // Function to toggle the visibility of the comment form
+        function toggleCommentForm(postId) {
+            const formContainer = document.getElementById(`comment-form-container-${postId}`);
+            formContainer.style.display = formContainer.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="/" class="logo">СоцСеть</a>
+            <nav class="nav">
+                <a href="/feed" class="nav-link">Лента</a>
+                <a href="/profile" class="nav-link">Профиль</a>
+                <a href="/friends" class="nav-link">Друзья</a>
+                <form action="/logout" method="POST">
+                 	<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+    				<button type="submit" class="nav-link">Выход</button>
+				</form>
+
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <h1 class="main-title">Лента новостей</h1>
+            
+            <div id="post-creation-section">
+    			<h2>Create a Post</h2>
+    			<form id="postForm" th:action="@{/posts/create}" method="POST">
+    				<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+        			<textarea id="postContent" name="content" placeholder="Write something..." required></textarea>
+        			<button type="submit">Post</button>
+    			</form>
+    			<div id="post-error-message" style="color: red; display: none;"></div>
+			</div>
+
+            <div class="feed">
+                <div class="post" th:each="post : ${posts}">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <span th:text="${post.user.username}" class="author-name"></span>
+                            <span th:text="${post.createdAt}" class="post-date"></span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p th:text="${post.content}"></p>
+                    </div>
+                    <div class="post-footer">
+                        <button class="btn">Нравится</button>
+                       	<button class="btn" th:onclick="'toggleCommentForm(' + ${post.id} + ')'">Комментировать</button>
+                        <button class="btn">Поделиться</button>
+                    </div>
+                    
+                    <div class="comments">
+				        <h3>Comments:</h3>
+				        <div th:each="comment : ${post.comments}">
+				            <div class="comment">
+				                <p class="author" th:text="${comment.user.username}">Author</p>
+				                <p class="content" th:text="${comment.content}">Content</p>
+				                <p class="timestamp" th:text="${comment.createdAt}"></p>
+				            </div>
+				        </div>
+			   		</div>
+			
+			    <!-- Comment Form -->
+			    	<div th:id="'comment-form-container-' + ${post.id}" class="comment-form-container">
+			        	<form th:action="@{/comments/create}" method="POST" class="comment-form">
+			            	<input type="hidden" name="postId" th:value="${post.id}" />
+			            	<textarea name="content" placeholder="Write a comment..." required></textarea>
+			            	<button type="submit">Post Comment</button>
+			        	</form>
+			    	</div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -86,3 +86,18 @@ body {
 .switch-link a:hover {
     text-decoration: underline;
 }
+
+.comment {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.comment p {
+    margin: 5px 0;
+}
+
+.comment .author {
+    font-weight: bold;
+    color: #555;
+}
+

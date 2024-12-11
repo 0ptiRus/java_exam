@@ -19,7 +19,7 @@ public class Friendship {
     @JoinColumn(name = "friend_id")
     private User friend;
     
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDateTime createdAt;
     
     @Enumerated(EnumType.STRING)
@@ -63,6 +63,17 @@ public class Friendship {
 		this.user = user;
 		this.friend = friend;
 		this.createdAt = createdAt;
+		this.status = status;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public Friendship(User user, User friend, FriendshipStatus status) {
+		super();
+		this.user = user;
+		this.friend = friend;
 		this.status = status;
 	}
 

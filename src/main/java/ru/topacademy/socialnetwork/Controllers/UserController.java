@@ -1,6 +1,7 @@
 package ru.topacademy.socialnetwork.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import ru.topacademy.socialnetwork.Models.*;
 import ru.topacademy.socialnetwork.Security.JwtUtil;
 import ru.topacademy.socialnetwork.Services.*;
 
+@ComponentScan
 @Controller
 public class UserController {
 	@Autowired

@@ -37,6 +37,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests((authz) -> authz
             	.requestMatchers("/register", "/login", "/css/**", "/js/**").permitAll()
+            	.requestMatchers("/posts/**").authenticated()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -44,10 +45,15 @@ public class SecurityConfig {
                     .loginProcessingUrl("/login")  // URL to submit the login form
                     .usernameParameter("email")    // Parameter name for username
                     .passwordParameter("password") // Parameter name for password
-                    .defaultSuccessUrl("/", true)  // Redirect after successful login
+                    .defaultSuccessUrl("/feed", true)  // Redirect after successful login
                     .failureUrl("/login?error=true") // Redirect after failed login
                 )
-            .logout(Customizer.withDefaults())
+            .logout(logout -> logout
+            	            .logoutUrl("/logout") // URL for logout
+            	            .logoutSuccessUrl("/login?logout") // Redirect after logout
+            	            .invalidateHttpSession(true) // Invalidate session
+            	            .deleteCookies("JSESSIONID") // Remove session cookie
+            	            .permitAll())
         	.userDetailsService(customUserDetailsService);
         return http.build();
     }

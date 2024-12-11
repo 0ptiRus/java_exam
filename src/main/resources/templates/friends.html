@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Друзья - Социальная Сеть</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="/" class="logo">СоцСеть</a>
+            <nav class="nav">
+                <a href="/feed" class="nav-link">Лента</a>
+                <a href="/profile" class="nav-link">Профиль</a>
+                <a href="/friends" class="nav-link">Друзья</a>
+                <form action="/logout" method="POST">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <button type="submit" class="nav-link">Выход</button>
+                </form>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <h1 class="main-title">Мои Друзья</h1>
+            
+            <div id="post-creation-section">
+                <h2>Добавить друга</h2>
+                <form action="/friends/addFriend" method="POST">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <input type="text" name="username" placeholder="Введите имя пользователя" required>
+                    <button type="submit">Добавить</button>
+                </form>
+            </div>
+            
+            <!-- Section for Friends -->
+            <section>
+                <h2>Друзья</h2>
+                <div th:if="${friends.isEmpty()}">
+                    <p>У вас нет друзей.</p>
+                </div>
+                <div class="friend-list" th:each="friend : ${friends}">
+                    <div class="friend">
+                        <span th:text="${friend.username}"></span>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section for Incoming Friend Requests -->
+            <section>
+                <h2>Входящие запросы</h2>
+                <div th:if="${incomingRequests.isEmpty()}">
+                    <p>Нет входящих запросов.</p>
+                </div>
+                <div class="friend-request" th:each="request : ${incomingRequests}">
+                    <div class="request">
+                    <span th:text="${request.friend.username}"></span>
+                    <form th:action="@{/friends/accept}" method="POST">
+                    	<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    	<input type="hidden" name="friendshipId" th:value="${request.id}" />
+                    	<button>Принять</button>
+                    </form>
+                    <form th:action="@{/friends/reject}" method="POST">
+                    	<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    	<input type="hidden" name="friendshipId" th:value="${request.id}" />
+                    	<button>Отклонить</button>
+                    </form>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section for Outgoing Friend Requests (Optional) -->
+            <section>
+                <h2>Исходящие запросы</h2>
+                <div th:if="${outgoingRequests.isEmpty()}">
+                    <p>Вы не отправляли запросы.</p>
+                </div>
+                <div class="friend-request" th:each="request : ${outgoingRequests}">
+                    <div class="request">
+                        <span th:text="${request.friend.username}"></span>
+                        <button disabled>Запрос отправлен</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

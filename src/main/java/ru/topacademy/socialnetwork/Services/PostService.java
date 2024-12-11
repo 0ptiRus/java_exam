@@ -6,6 +6,7 @@ import ru.topacademy.socialnetwork.Repositories.*;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +22,7 @@ public class PostService {
         postRepository.save(post);
     }
     
+    @EntityGraph(attributePaths = {"comments.user"})
     public Iterable<Post> getAllPosts() {
         return postRepository.findAll();
     }
@@ -33,4 +35,9 @@ public class PostService {
         
         postRepository.save(repostedPost);
     }
+
+    @EntityGraph(attributePaths = {"comments", "likes", "reposts"})
+	public Post getPostById(Long postId) {
+		return postRepository.getById(postId);
+	}
 }

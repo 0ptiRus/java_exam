@@ -67,6 +67,14 @@ public class User {
 		this.confirmPassword = password;
 	}
 
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+
 	public User(String username, String email, String password) {
 		super();
 		this.username = username;

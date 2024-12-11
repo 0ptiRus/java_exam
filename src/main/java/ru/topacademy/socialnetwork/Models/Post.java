@@ -59,6 +59,58 @@ public class Post {
 		this.content = content;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public Integer getRepostCount() {
+		return repostCount;
+	}
+
+	public void setRepostCount(Integer repostCount) {
+		this.repostCount = repostCount;
+	}
+
+	public Post getOriginalPost() {
+		return originalPost;
+	}
+
+	public void setOriginalPost(Post originalPost) {
+		this.originalPost = originalPost;
+	}
+
+	public Boolean getIsRepost() {
+		return isRepost;
+	}
+
+	public void setIsRepost(Boolean isRepost) {
+		this.isRepost = isRepost;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public List<Like> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(List<Like> likes) {
+		this.likes = likes;
+	}
+
+	public List<Post> getReposts() {
+		return reposts;
+	}
+
+	public void setReposts(List<Post> reposts) {
+		this.reposts = reposts;
+	}
+
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
