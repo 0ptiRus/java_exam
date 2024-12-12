@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Друзья - Социальная Сеть</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    
+    <script>
+    document.querySelectorAll('.remove-button').forEach(button => {
+        button.addEventListener('click', (e) => {
+            if (!confirm('Are you sure you want to remove this friend?')) {
+                e.preventDefault();
+            }
+        });
+    });
+    </script>
 </head>
 <body>
     <header class="header">
@@ -44,6 +54,11 @@
                 <div class="friend-list" th:each="friend : ${friends}">
                     <div class="friend">
                         <span th:text="${friend.username}"></span>
+                         <form th:action="@{/friends/remove}" method="POST" style="display:inline;">
+            				<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+            				<input type="hidden" name="friendId" th:value="${friend.id}" />
+           					<button type="submit" class="remove-button" title="Remove Friend">❌</button>
+        				</form>
                     </div>
                 </div>
             </section>

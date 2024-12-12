@@ -28,37 +28,30 @@ public class FriendshipService {
         }
     }
     
-    public void acceptFriendRequest(Long userId, Long friendId) {
-        User user = userService.findUserById(userId);
-        User friend = userService.findUserById(friendId);
-        
-        Friendship friendship = friendshipRepository.findByUserAndFriend(friend, user);
-        if (friendship != null && friendship.getStatus().equals(FriendshipStatus.PENDING)) {
+    public void acceptFriendRequest(User currentUser, Long friendshipId) {
+        Friendship friendship = friendshipRepository.findById(friendshipId)
+                .orElseThrow(() -> new RuntimeException("Friendship not found"));
+
+        if (friendship.getFriend().equals(currentUser) && friendship.getStatus() == FriendshipStatus.PENDING) {
             friendship.setStatus(FriendshipStatus.ACCEPTED);
+            friendship.setCreatedAt(LocalDateTime.now());
             friendshipRepository.save(friendship);
         }
     }
-    
-    public void rejectFriendRequest(Long userId, Long friendId) {
-        User user = userService.findUserById(userId);
-        User friend = userService.findUserById(friendId);
-        
-        Friendship friendship = friendshipRepository.findByUserAndFriend(friend, user);
-        
-        if (friendship != null && friendship.getStatus().equals(FriendshipStatus.PENDING)) 
-        {
-            friendship.setStatus(FriendshipStatus.REJECTED);
-            friendshipRepository.save(friendship);
+
+    public void rejectFriendRequest(User currentUser, Long friendshipId) {
+        Friendship friendship = friendshipRepository.findById(friendshipId)
+                .orElseThrow(() -> new RuntimeException("Friendship not found"));
+
+        if (friendship.getFriend().equals(currentUser) && friendship.getStatus() == FriendshipStatus.PENDING) {
+            friendshipRepository.delete(friendship);
         }
     }
     
-    public Iterable<Friendship> getPendingRequestsForUser(Long userId) {
-        User user = userService.findUserById(userId);
-        return friendshipRepository.findAllByFriendAndStatus(user, FriendshipStatus.PENDING);
-    }
-    
-    public Iterable<Friendship> getFriendsOfUser(Long userId) {
-        User user = userService.findUserById(userId);
-        return friendshipRepository.findAllByUserAndStatusOrFriendAndStatus(user, FriendshipStatus.ACCEPTED, user, FriendshipStatus.ACCEPTED);
+    public void removeFriend(User currentUser, Long friendId) {
+        Friendship friendship = friendshipRepository.findByUserAndFriend(currentUser.getId(), friendId)
+                .orElseThrow(() -> new RuntimeException("Friendship not found"));
+
+        friendshipRepository.delete(friendship);
     }
 }

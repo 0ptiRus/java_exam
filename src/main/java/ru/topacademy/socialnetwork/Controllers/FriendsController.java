@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ru.topacademy.socialnetwork.Models.Friendship;
 import ru.topacademy.socialnetwork.Models.User;
+import ru.topacademy.socialnetwork.Services.FriendshipService;
 import ru.topacademy.socialnetwork.Services.UserService;
 
 @ComponentScan
@@ -24,6 +25,9 @@ public class FriendsController {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private FriendshipService friendshipService;
 
     @GetMapping("")
     public String getFriendsPage(Model model) {
@@ -67,6 +71,16 @@ public class FriendsController {
         User currentUser = userService.findUserByEmail(auth.getName());
 
         userService.rejectFriendRequest(currentUser, friendshipId);
+
+        return "redirect:/friends";
+    }
+    
+    @PostMapping("/remove")
+    public String removeFriend(@RequestParam("friendId") Long friendId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userService.findUserByEmail(auth.getName());
+
+        friendshipService.removeFriend(currentUser, friendId);
 
         return "redirect:/friends";
     }

@@ -1,6 +1,7 @@
 package ru.topacademy.socialnetwork.Repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,6 +25,7 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     @Query("SELECT f.user FROM Friendship f WHERE f.friend = :user AND f.status = :status")
     List<User> findFriendsReceivedByUser(@Param("user") User user, @Param("status") FriendshipStatus status);
 
-
+    @Query("SELECT f FROM Friendship f WHERE f.user.id = :userId AND f.friend.id = :friendId")
+    Optional<Friendship> findByUserAndFriend(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
 }

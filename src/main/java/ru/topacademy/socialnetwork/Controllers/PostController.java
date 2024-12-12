@@ -9,10 +9,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import ru.topacademy.socialnetwork.Models.Post;
@@ -50,8 +53,22 @@ public class PostController
         return "redirect:/feed"; // Redirect to the main page or posts list
     }
 	
-	@GetMapping("/test")
-	public String test() {
-	    return "<h1>Test</h1>"; // Create a simple test view to see if the controller is working
-	}
+	@PostMapping("/delete")
+    public String deletePost(@RequestParam("postId") Long postId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userService.findUserByEmail(auth.getName());
+
+        Post post = postService.getPostById(postId);
+
+        if (post.getUser().equals(currentUser)) 
+        {
+            if(postService.deletePost(post).equals("OK"))
+            {
+            	return "redirect:/profile";        	
+            }
+        }
+        return "/error";
+
+    }
+	
 }

@@ -14,7 +14,7 @@ public class Post {
     @GeneratedValue()
     private Long id;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
     
@@ -34,7 +34,7 @@ public class Post {
     @Column(nullable = true)
     private Boolean isRepost = false;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
     
     @OneToMany(mappedBy = "post")

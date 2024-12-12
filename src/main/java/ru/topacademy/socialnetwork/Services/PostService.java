@@ -4,6 +4,8 @@ import ru.topacademy.socialnetwork.Models.*;
 import ru.topacademy.socialnetwork.Repositories.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -40,4 +42,21 @@ public class PostService {
 	public Post getPostById(Long postId) {
 		return postRepository.getById(postId);
 	}
+    
+    public List<Post> getFriendsPosts(List<User> friends) {
+        return postRepository.findPostsByFriends(friends);
+    }
+    
+    public String deletePost(Post post)
+    {
+    	try
+    	{
+    		postRepository.delete(post);    		
+    	}
+    	catch(Exception ex)
+    	{
+    		return ex.toString();
+    	}
+    	return "OK";
+    }
 }

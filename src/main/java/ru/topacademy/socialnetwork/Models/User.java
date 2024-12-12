@@ -29,7 +29,15 @@ public class User {
     @Pattern(regexp = ".*\\d.*", message = "Пароль должен содержать хотя бы одну цифру.")
     private String password;
     
-    @Transient
+    public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Transient
     private String confirmPassword;
     
     @OneToMany(mappedBy = "user")

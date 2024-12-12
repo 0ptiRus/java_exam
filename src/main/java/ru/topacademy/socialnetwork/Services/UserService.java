@@ -26,10 +26,12 @@ public class UserService {
     private FriendshipRepository friendshipRepository;
     
     public void registerUser(User user) throws IllegalArgumentException {
-        if (userRepository.findByUsername(user.getUsername()) != null) {
+        if (userRepository.findByUsername(user.getUsername()) != null) 
+        {
             throw new IllegalArgumentException("Пользователь с таким именем уже существует.");
         }
-        if (userRepository.findByEmail(user.getEmail()) != null) {
+        if (userRepository.findByEmail(user.getEmail()) != null) 
+        {
             throw new IllegalArgumentException("Пользователь с таким email уже существует.");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));

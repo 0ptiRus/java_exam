@@ -66,6 +66,11 @@
                             <span th:text="${post.user.username}" class="author-name"></span>
                             <span th:text="${post.createdAt}" class="post-date"></span>
                         </div>
+                         <form th:action="@{/posts/delete}" method="POST" th:if="${post.user.username == user.username}" style="display:inline;">
+            				<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+            				<input type="hidden" name="postId" th:value="${post.id}" />
+            				<button type="submit" class="delete-button" title="Delete Post">🗑</button>
+        				</form>
                     </div>
                     <div class="post-content">
                         <p th:text="${post.content}"></p>
